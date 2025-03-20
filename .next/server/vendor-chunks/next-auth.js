@@ -1261,6 +1261,16 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({\n    value: true\n}));
 
 /***/ }),
 
+/***/ "(rsc)/./node_modules/next-auth/providers/credentials.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/next-auth/providers/credentials.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+eval("\nObject.defineProperty(exports, \"__esModule\", ({\n    value: true\n}));\nexports[\"default\"] = Credentials;\nfunction Credentials(options) {\n    return {\n        id: \"credentials\",\n        name: \"Credentials\",\n        type: \"credentials\",\n        credentials: {},\n        authorize: ()=>null,\n        options\n    };\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9ub2RlX21vZHVsZXMvbmV4dC1hdXRoL3Byb3ZpZGVycy9jcmVkZW50aWFscy5qcyIsIm1hcHBpbmdzIjoiQUFBYTtBQUViQSw4Q0FBNkM7SUFDM0NHLE9BQU87QUFDVCxDQUFDLEVBQUM7QUFDRkQsa0JBQWUsR0FBR0c7QUFDbEIsU0FBU0EsWUFBWUMsT0FBTztJQUMxQixPQUFPO1FBQ0xDLElBQUk7UUFDSkMsTUFBTTtRQUNOQyxNQUFNO1FBQ05DLGFBQWEsQ0FBQztRQUNkQyxXQUFXLElBQU07UUFDakJMO0lBQ0Y7QUFDRiIsInNvdXJjZXMiOlsid2VicGFjazovL3ZpZGVvZWRpdGlmeS8uL25vZGVfbW9kdWxlcy9uZXh0LWF1dGgvcHJvdmlkZXJzL2NyZWRlbnRpYWxzLmpzPzc2MzkiXSwic291cmNlc0NvbnRlbnQiOlsiXCJ1c2Ugc3RyaWN0XCI7XG5cbk9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBcIl9fZXNNb2R1bGVcIiwge1xuICB2YWx1ZTogdHJ1ZVxufSk7XG5leHBvcnRzLmRlZmF1bHQgPSBDcmVkZW50aWFscztcbmZ1bmN0aW9uIENyZWRlbnRpYWxzKG9wdGlvbnMpIHtcbiAgcmV0dXJuIHtcbiAgICBpZDogXCJjcmVkZW50aWFsc1wiLFxuICAgIG5hbWU6IFwiQ3JlZGVudGlhbHNcIixcbiAgICB0eXBlOiBcImNyZWRlbnRpYWxzXCIsXG4gICAgY3JlZGVudGlhbHM6IHt9LFxuICAgIGF1dGhvcml6ZTogKCkgPT4gbnVsbCxcbiAgICBvcHRpb25zXG4gIH07XG59Il0sIm5hbWVzIjpbIk9iamVjdCIsImRlZmluZVByb3BlcnR5IiwiZXhwb3J0cyIsInZhbHVlIiwiZGVmYXVsdCIsIkNyZWRlbnRpYWxzIiwib3B0aW9ucyIsImlkIiwibmFtZSIsInR5cGUiLCJjcmVkZW50aWFscyIsImF1dGhvcml6ZSJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(rsc)/./node_modules/next-auth/providers/credentials.js\n");
+
+/***/ }),
+
 /***/ "(rsc)/./node_modules/next-auth/providers/google.js":
 /*!****************************************************!*\
   !*** ./node_modules/next-auth/providers/google.js ***!
