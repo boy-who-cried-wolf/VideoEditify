@@ -13,8 +13,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div className="bg-gray-50 flex-1">
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 p-4">
             <h2 className="text-2xl font-bold mb-4">Welcome to VideoEditify!</h2>
@@ -23,7 +23,7 @@ export default function Dashboard() {
             </p>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 } 
