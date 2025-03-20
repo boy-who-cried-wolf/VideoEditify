@@ -33,16 +33,28 @@ export default function Navigation() {
                 Services
               </Link>
               {session && (
-                <Link
-                  href="/dashboard"
-                  className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                    pathname === '/dashboard'
-                      ? 'text-primary-600 border-b-2 border-primary-500'
-                      : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  Dashboard
-                </Link>
+                <>
+                  <Link
+                    href="/dashboard"
+                    className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                      pathname === '/dashboard'
+                        ? 'text-primary-600 border-b-2 border-primary-500'
+                        : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/freelancer/dashboard"
+                    className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                      pathname.startsWith('/freelancer')
+                        ? 'text-primary-600 border-b-2 border-primary-500'
+                        : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Freelancer
+                  </Link>
+                </>
               )}
             </div>
           </div>

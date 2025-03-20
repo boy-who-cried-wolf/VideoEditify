@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -38,16 +41,27 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String    @unique
-  password      String?   // Optional because Google auth users won't have a password
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-  sessions      Session[]
+  password      String?   // Optional because Google auth users won't have a password
+  role          UserRole  @default(CUSTOMER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  orders        Order[]   @relation("UserOrders")
-  freelanceOrders Order[] @relation("FreelancerOrders")
-  reviews       Review[]
+  
+  // Freelancer specific fields
+  bio           String?   @db.Text
+  skills        String[]  @default([])
+  hourlyRate    Float?
+  stripeConnectId String?
+  isAvailable   Boolean   @default(true)
+  
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]   // Orders placed by the user
+  claimedOrders Order[]   @relation("FreelancerOrders") // Orders claimed by the freelancer
+  reviews       Review[]  // Reviews given by the user
+  receivedReviews Review[] @relation("FreelancerReviews") // Reviews received as a freelancer
+  messages      Message[] // Messages sent by the user
 }
 
 model VerificationToken {
@@ -58,36 +72,99 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+enum UserRole {
+  ADMIN
+  CUSTOMER
+  FREELANCER
+}
+
+enum OrderStatus {
+  PENDING     // Initial state when order is created
+  CLAIMED     // When a freelancer claims the order
+  IN_PROGRESS // Work has started
+  IN_REVIEW   // Client is reviewing the work
+  REVISION    // Client has requested changes
+  COMPLETED   // Order is finished and accepted
+  CANCELLED   // Order has been cancelled
+}
+
 model Order {
   id          String      @id @default(cuid())
   title       String
-  description String
+  description String      @db.Text
   status      OrderStatus @default(PENDING)
   price       Float
+  
+  // Order options and customization
+  options     Json?       // Store selected options as JSON
+  requirements String?    @db.Text
+  deadline    DateTime?
+  
+  // File management
+  sourceFiles FileUpload[] @relation("SourceFiles")
+  deliveryFiles FileUpload[] @relation("DeliveryFiles")
+  
+  // Relations
   userId      String
-  user        User        @relation("UserOrders", fields: [userId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
   freelancerId String?
   freelancer   User?      @relation("FreelancerOrders", fields: [freelancerId], references: [id])
+  review      Review?
+  messages    Message[]
+  
+  // Timestamps
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  review      Review?
+  
+  // Payment
+  stripePaymentIntentId String?
+  isPaid      Boolean     @default(false)
 }
 
 model Review {
   id          String   @id @default(cuid())
-  rating      Int
-  comment     String
+  rating      Int      @db.SmallInt
+  comment     String   @db.Text
+  reply       String?  @db.Text
+  
+  // Relations
   orderId     String   @unique
   order       Order    @relation(fields: [orderId], references: [id])
   userId      String
   user        User     @relation(fields: [userId], references: [id])
+  freelancerId String
+  freelancer   User    @relation("FreelancerReviews", fields: [freelancerId], references: [id])
+  
+  // Timestamps
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-enum OrderStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
+model Message {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  
+  // Relations
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id])
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FileUpload {
+  id          String   @id @default(cuid())
+  filename    String
+  key         String   // Storage key in R2
+  size        Int
+  mimeType    String
+  uploadedAt  DateTime @default(now())
+  
+  // Relations
+  orderId     String
+  sourceOrder Order?   @relation("SourceFiles", fields: [orderId], references: [id])
+  deliveryOrder Order? @relation("DeliveryFiles", fields: [orderId], references: [id])
 } 
