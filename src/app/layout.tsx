@@ -1,15 +1,13 @@
-import type { Metadata } from 'next'
+import '../styles/globals.css'
 import { Inter } from 'next/font/google'
-import { headers } from 'next/headers'
 import { NextAuthProvider } from '@/components/providers/NextAuthProvider'
 import Navigation from '@/components/Navigation'
-import '@/styles/globals.css'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'VideoEditify - Professional Video Editing Services',
-  description: 'Professional video editing services for content creators, YouTubers, streamers, and businesses.',
+export const metadata = {
+  title: 'VideoEditify',
+  description: 'Professional video editing service',
 }
 
 export default function RootLayout({
@@ -18,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body>
+    <html lang="en">
+      <body className={inter.className}>
         <NextAuthProvider>
           <Navigation />
           {children}

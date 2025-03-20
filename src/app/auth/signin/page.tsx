@@ -32,11 +32,19 @@ export default function SignIn() {
         return
       }
 
+      // Force a router refresh to update the session state
+      router.refresh()
+      
+      // Redirect to dashboard
       router.push('/dashboard')
     } catch (error) {
       setError('An error occurred. Please try again.')
       setIsLoading(false)
     }
+  }
+
+  const handleGoogleSignIn = () => {
+    signIn('google', { callbackUrl: '/dashboard' })
   }
 
   return (
@@ -111,7 +119,7 @@ export default function SignIn() {
 
           <div className="mt-6">
             <button
-              onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+              onClick={handleGoogleSignIn}
               className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             >
               <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">

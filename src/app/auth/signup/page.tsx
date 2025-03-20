@@ -30,7 +30,7 @@ export default function SignUp() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong')
+        throw new Error(data.error || 'Something went wrong')
       }
 
       // Sign in the user after successful registration
@@ -46,7 +46,12 @@ export default function SignUp() {
         return
       }
 
+      // Force a router refresh to update the session state
+      router.refresh()
+      
+      // Redirect to dashboard
       router.push('/dashboard')
+      router.refresh() // Add an extra refresh to ensure the session is updated
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred')
       setIsLoading(false)
