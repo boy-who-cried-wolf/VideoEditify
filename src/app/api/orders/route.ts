@@ -14,32 +14,48 @@ export async function POST(request: Request) {
       )
     }
 
-    const { title, description, videoUrl, serviceId } = await request.json()
+    const { title, description, requirements, deadline, price, sourceFiles } = await request.json()
 
     // Validate required fields
-    if (!title || !description || !videoUrl) {
+    if (!title || !description || !deadline || !sourceFiles?.length) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    // Create the order
+    // Get user ID
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { id: true },
+    })
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      )
+    }
+
+    // Create order with file associations
     const order = await prisma.order.create({
       data: {
         title,
         description,
-        videoUrl,
-        status: 'PENDING',
-        user: {
-          connect: {
-            email: session.user.email,
-          },
+        requirements,
+        deadline: new Date(deadline),
+        price: parseFloat(price.toString()),
+        userId: user.id,
+        sourceFiles: {
+          connect: sourceFiles.map((fileId: string) => ({ id: fileId })),
         },
+      },
+      include: {
+        sourceFiles: true,
       },
     })
 
-    return NextResponse.json(order, { status: 201 })
+    return NextResponse.json(order)
   } catch (error) {
     console.error('Failed to create order:', error)
     return NextResponse.json(

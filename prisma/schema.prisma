@@ -165,6 +165,6 @@ model FileUpload {
   
   // Relations
   orderId     String
-  sourceOrder Order?   @relation("SourceFiles", fields: [orderId], references: [id])
-  deliveryOrder Order? @relation("DeliveryFiles", fields: [orderId], references: [id])
+  sourceOrder Order?   @relation("SourceFiles", fields: [orderId], references: [id], map: "FileUpload_sourceOrder_fkey")
+  deliveryOrder Order? @relation("DeliveryFiles", fields: [orderId], references: [id], map: "FileUpload_deliveryOrder_fkey")
 } 
