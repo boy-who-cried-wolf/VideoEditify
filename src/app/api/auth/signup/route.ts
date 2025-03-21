@@ -43,7 +43,7 @@ export async function POST(req: Request) {
         name,
         email,
         password: hashedPassword,
-        role: isFreelancer ? 'FREELANCER' : 'USER',
+        role: isFreelancer ? 'FREELANCER' : 'CUSTOMER',
         ...(isFreelancer && {
           bio,
           skills,

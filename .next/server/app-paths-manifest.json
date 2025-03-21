@@ -1,10 +1,20 @@
 {
+  "/_not-found": "app/_not-found.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/freelancers/page": "app/freelancers/page.js",
-  "/services/page": "app/services/page.js",
-  "/page": "app/page.js",
+  "/api/freelancer/orders/[id]/claim/route": "app/api/freelancer/orders/[id]/claim/route.js",
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/freelancer/register/route": "app/api/freelancer/register/route.js",
+  "/api/auth/signup/route": "app/api/auth/signup/route.js",
   "/auth/freelancer/signup/page": "app/auth/freelancer/signup/page.js",
   "/auth/signup/page": "app/auth/signup/page.js",
   "/auth/signin/page": "app/auth/signin/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/dashboard/page": "app/dashboard/page.js",
+  "/freelancer/dashboard/page": "app/freelancer/dashboard/page.js",
+  "/dashboard/orders/[id]/page": "app/dashboard/orders/[id]/page.js",
+  "/freelancer/register/page": "app/freelancer/register/page.js",
+  "/freelancers/page": "app/freelancers/page.js",
+  "/api/upload/route": "app/api/upload/route.js",
+  "/page": "app/page.js",
+  "/services/order/page": "app/services/order/page.js",
+  "/services/page": "app/services/page.js"
 }

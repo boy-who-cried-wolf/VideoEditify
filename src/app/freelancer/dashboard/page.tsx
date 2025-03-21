@@ -1,11 +1,18 @@
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import type { Order } from '@/types/order'
 
-async function getFreelancerOrders(userEmail: string) {
+type ClaimedOrder = Omit<Order, 'user'> & {
+  user: {
+    name: string | null
+    email: string
+  }
+}
+
+async function getFreelancerOrders(userEmail: string): Promise<{ availableOrders: Order[], claimedOrders: ClaimedOrder[] } | null> {
   const user = await prisma.user.findUnique({
     where: { email: userEmail },
     select: { id: true, role: true },
@@ -87,7 +94,7 @@ export default async function FreelancerDashboard() {
                 </div>
               ) : (
                 <ul role="list" className="divide-y divide-gray-200">
-                  {claimedOrders.map((order) => (
+                  {claimedOrders.map((order: ClaimedOrder) => (
                     <li key={order.id}>
                       <Link
                         href={`/freelancer/orders/${order.id}`}
@@ -153,7 +160,7 @@ export default async function FreelancerDashboard() {
                 </div>
               ) : (
                 <ul role="list" className="divide-y divide-gray-200">
-                  {availableOrders.map((order) => (
+                  {availableOrders.map((order: Order) => (
                     <li key={order.id}>
                       <div className="px-4 py-4 sm:px-6">
                         <div className="flex items-center justify-between">

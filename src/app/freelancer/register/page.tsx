@@ -4,22 +4,28 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
+interface FreelancerFormData {
+  bio: string
+  skills: string
+  hourlyRate: number
+}
+
 export default function FreelancerRegistration() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
-  
-  const [formData, setFormData] = useState({
-    bio: '',
-    skills: '',
-    hourlyRate: '',
-  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
+  
+  const [formData, setFormData] = useState<FreelancerFormData>({
+    bio: '',
+    skills: '',
+    hourlyRate: 25, // Default hourly rate
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!session) {
-      router.push('/auth/signin')
+      router.replace('/auth/signin')
       return
     }
 
@@ -32,11 +38,7 @@ export default function FreelancerRegistration() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          skills: formData.skills.split(',').map(skill => skill.trim()),
-          hourlyRate: parseFloat(formData.hourlyRate),
-        }),
+        body: JSON.stringify(formData),
       })
 
       if (!response.ok) {
@@ -44,7 +46,7 @@ export default function FreelancerRegistration() {
         throw new Error(data.error || 'Failed to register as freelancer')
       }
 
-      router.push('/freelancer/dashboard')
+      router.replace('/freelancer/dashboard')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to register as freelancer')
     } finally {
@@ -57,8 +59,12 @@ export default function FreelancerRegistration() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  if (status === 'loading') {
+    return <div>Loading...</div>
+  }
+
   if (!session) {
-    router.push('/auth/signin')
+    router.replace('/auth/signin')
     return null
   }
 
@@ -68,7 +74,7 @@ export default function FreelancerRegistration() {
         <div className="bg-white shadow rounded-lg">
           <div className="px-4 py-5 sm:p-6">
             <h1 className="text-2xl font-bold text-gray-900 mb-6">
-              Become a Freelancer
+              Register as a Freelancer
             </h1>
             
             {error && (
@@ -101,15 +107,15 @@ export default function FreelancerRegistration() {
                   Skills
                 </label>
                 <div className="mt-1">
-                  <input
-                    type="text"
-                    name="skills"
+                  <textarea
                     id="skills"
+                    name="skills"
+                    rows={4}
                     required
                     value={formData.skills}
                     onChange={handleChange}
                     className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    placeholder="Motion graphics, Sound design, Color grading (comma separated)"
+                    placeholder="List your video editing skills and software proficiency..."
                   />
                 </div>
               </div>
@@ -125,11 +131,9 @@ export default function FreelancerRegistration() {
                     id="hourlyRate"
                     required
                     min="1"
-                    step="0.01"
                     value={formData.hourlyRate}
                     onChange={handleChange}
                     className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    placeholder="25.00"
                   />
                 </div>
               </div>

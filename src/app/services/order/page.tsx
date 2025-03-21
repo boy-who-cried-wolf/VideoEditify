@@ -14,7 +14,7 @@ interface OrderFormData {
 }
 
 export default function OrderPage() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -31,7 +31,7 @@ export default function OrderPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!session) {
-      router.push('/auth/signin')
+      router.replace('/auth/signin')
       return
     }
 
@@ -61,7 +61,7 @@ export default function OrderPage() {
       }
 
       const order = await response.json()
-      router.push(`/dashboard/orders/${order.id}`)
+      router.replace(`/dashboard/orders/${order.id}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create order')
     } finally {
@@ -82,8 +82,12 @@ export default function OrderPage() {
     setError(error)
   }
 
+  if (status === 'loading') {
+    return <div>Loading...</div>
+  }
+
   if (!session) {
-    router.push('/auth/signin')
+    router.replace('/auth/signin')
     return null
   }
 
