@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 export default function Navigation() {
   const { data: session } = useSession()
   const pathname = usePathname()
+  const isFreelancer = session?.user?.role === 'FREELANCER'
 
   // Don't show navigation on auth pages
   if (pathname?.startsWith('/auth/')) {
@@ -22,38 +23,61 @@ export default function Navigation() {
               VideoEditify
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                href="/services"
-                className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                  pathname === '/services'
-                    ? 'text-primary-600 border-b-2 border-primary-500'
-                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Services
-              </Link>
+              {/* Show freelancers list to customers */}
+              {!isFreelancer && (
+                <Link
+                  href="/freelancers"
+                  className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                    pathname === '/freelancers'
+                      ? 'text-primary-600 border-b-2 border-primary-500'
+                      : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  Freelancers
+                </Link>
+              )}
+
+              {/* Show services to customers */}
+              {!isFreelancer && (
+                <Link
+                  href="/services"
+                  className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                    pathname === '/services'
+                      ? 'text-primary-600 border-b-2 border-primary-500'
+                      : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  Services
+                </Link>
+              )}
+
               {session && (
                 <>
+                  {/* Show different dashboard based on role */}
                   <Link
-                    href="/dashboard"
+                    href={isFreelancer ? '/freelancer/dashboard' : '/dashboard'}
                     className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                      pathname === '/dashboard'
+                      pathname === (isFreelancer ? '/freelancer/dashboard' : '/dashboard')
                         ? 'text-primary-600 border-b-2 border-primary-500'
                         : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                   >
                     Dashboard
                   </Link>
-                  <Link
-                    href="/freelancer/dashboard"
-                    className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                      pathname.startsWith('/freelancer')
-                        ? 'text-primary-600 border-b-2 border-primary-500'
-                        : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
-                  >
-                    Freelancer
-                  </Link>
+
+                  {/* Show available orders to freelancers */}
+                  {isFreelancer && (
+                    <Link
+                      href="/freelancer/orders"
+                      className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                        pathname === '/freelancer/orders'
+                          ? 'text-primary-600 border-b-2 border-primary-500'
+                          : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      Available Orders
+                    </Link>
+                  )}
                 </>
               )}
             </div>
