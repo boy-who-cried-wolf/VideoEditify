@@ -23,21 +23,19 @@ export default function Navigation() {
               VideoEditify
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {/* Show freelancers list to customers */}
-              {!isFreelancer && (
-                <Link
-                  href="/freelancers"
-                  className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
-                    pathname === '/freelancers'
-                      ? 'text-primary-600 border-b-2 border-primary-500'
-                      : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  Freelancers
-                </Link>
-              )}
+              {/* Show freelancers list to everyone */}
+              <Link
+                href="/freelancers"
+                className={`inline-flex items-center px-1 pt-1 text-sm font-medium ${
+                  pathname === '/freelancers'
+                    ? 'text-primary-600 border-b-2 border-primary-500'
+                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Freelancers
+              </Link>
 
-              {/* Show services to customers */}
+              {/* Show services to non-freelancers */}
               {!isFreelancer && (
                 <Link
                   href="/services"
@@ -65,7 +63,7 @@ export default function Navigation() {
                     Dashboard
                   </Link>
 
-                  {/* Show available orders to freelancers */}
+                  {/* Show orders to freelancers */}
                   {isFreelancer && (
                     <Link
                       href="/freelancer/orders"
@@ -90,7 +88,7 @@ export default function Navigation() {
                   {session.user?.name || session.user?.email}
                 </span>
                 <button
-                  onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+                  onClick={() => signOut({ callbackUrl: '/' })}
                   className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
                   Sign out

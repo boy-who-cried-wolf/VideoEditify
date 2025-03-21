@@ -18,13 +18,13 @@ export default function HomePage() {
             
             <div className="mt-10 flex justify-center gap-x-6">
               <Link
-                href="/services"
+                href="/auth/signup"
                 className="rounded-md bg-white px-8 py-3 text-base font-medium text-primary-600 shadow-sm hover:bg-primary-50"
               >
                 Start Your Order
               </Link>
               <Link
-                href="/freelancer/register"
+                href="/auth/freelancer/signup"
                 className="rounded-md bg-primary-500 px-8 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-400"
               >
                 Join as Freelancer

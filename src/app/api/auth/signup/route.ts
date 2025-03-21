@@ -4,7 +4,7 @@ import { hashPassword } from '@/lib/auth'
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json()
+    const { name, email, password, isFreelancer, bio, skills, hourlyRate } = await req.json()
 
     // Validate input
     if (!email || !email.includes('@') || !password || password.length < 8) {
@@ -12,6 +12,16 @@ export async function POST(req: Request) {
         { error: 'Invalid input - password should be at least 8 characters.' },
         { status: 422 }
       )
+    }
+
+    // Additional validation for freelancer registration
+    if (isFreelancer) {
+      if (!bio || !skills || !hourlyRate) {
+        return NextResponse.json(
+          { error: 'Missing required freelancer fields.' },
+          { status: 422 }
+        )
+      }
     }
 
     // Check if user exists
@@ -33,7 +43,13 @@ export async function POST(req: Request) {
         name,
         email,
         password: hashedPassword,
-        role: 'USER',
+        role: isFreelancer ? 'FREELANCER' : 'USER',
+        ...(isFreelancer && {
+          bio,
+          skills,
+          hourlyRate,
+          isAvailable: true,
+        }),
       },
     })
 
