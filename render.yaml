@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: videoeditify
+    env: node
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # Will be set manually in Render dashboard
+      - key: NEXTAUTH_URL
+        sync: false # Will be set manually in Render dashboard
+      - key: NEXTAUTH_SECRET
+        generateValue: true # Will generate a random value on first deploy
+      - key: GOOGLE_CLIENT_ID
+        sync: false # Will be set manually in Render dashboard
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false # Will be set manually in Render dashboard
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false 
